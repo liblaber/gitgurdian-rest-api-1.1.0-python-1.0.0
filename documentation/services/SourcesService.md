@@ -1,0 +1,98 @@
+# SourcesService
+
+A list of all methods in the `SourcesService` service. Click on the method name to view detailed information about that method.
+
+| Methods                             | Description                             |
+| :---------------------------------- | :-------------------------------------- |
+| [list_sources](#list_sources)       | List sources known by GitGuardian.      |
+| [retrieve_source](#retrieve_source) | Retrieve a source known by GitGuardian. |
+
+## list_sources
+
+List sources known by GitGuardian.
+
+- HTTP Method: `GET`
+- Endpoint: `/v1/sources`
+
+**Parameters**
+
+| Name               | Type                                                                | Required | Description                                                                                             |
+| :----------------- | :------------------------------------------------------------------ | :------- | :------------------------------------------------------------------------------------------------------ |
+| cursor             | str                                                                 | ❌       | Pagination cursor.                                                                                      |
+| page               | int                                                                 | ❌       | Page number.                                                                                            |
+| per_page           | int                                                                 | ❌       | Number of items to list per page.                                                                       |
+| search             | str                                                                 | ❌       | Sources matching this search.                                                                           |
+| last_scan_status   | [ScanStatusEnum](../models/ScanStatusEnum.md)                       | ❌       |                                                                                                         |
+| health             | [SourceHealthEnum](../models/SourceHealthEnum.md)                   | ❌       |                                                                                                         |
+| type\_             | [SourceTypeQueryParamsEnum](../models/SourceTypeQueryParamsEnum.md) | ❌       |                                                                                                         |
+| ordering           | [ListSourcesOrdering](../models/ListSourcesOrdering.md)             | ❌       | Sort the results by their field value. The default sort is ASC, DESC if the field is preceded by a '-'. |
+| visibility         | [ListSourcesVisibility](../models/ListSourcesVisibility.md)         | ❌       |                                                                                                         |
+| external_id        | str                                                                 | ❌       | Filter by specific external id.                                                                         |
+| source_criticality | [SourceCriticality](../models/SourceCriticality.md)                 | ❌       |                                                                                                         |
+| monitored          | bool                                                                | ❌       | Filter by monitored value.                                                                              |
+
+**Return Type**
+
+`List[Source]`
+
+**Example Usage Code Snippet**
+
+```python
+from gitguardian import Gitguardian, Environment
+from gitguardian.models import ScanStatusEnum, SourceHealthEnum, SourceTypeQueryParamsEnum, ListSourcesOrdering, ListSourcesVisibility, SourceCriticality
+
+sdk = Gitguardian(
+    access_token="YOUR_ACCESS_TOKEN",
+    base_url=Environment.DEFAULT.value
+)
+
+result = sdk.sources.list_sources(
+    cursor="cursor",
+    per_page=20,
+    search="test-repository",
+    last_scan_status="pending",
+    health="safe",
+    type_="bitbucket",
+    ordering="last_scan_date",
+    visibility="public",
+    external_id="1",
+    source_criticality="critical",
+    monitored="true"
+)
+
+print(result)
+```
+
+## retrieve_source
+
+Retrieve a source known by GitGuardian.
+
+- HTTP Method: `GET`
+- Endpoint: `/v1/sources/{source_id}`
+
+**Parameters**
+
+| Name      | Type | Required | Description                       |
+| :-------- | :--- | :------- | :-------------------------------- |
+| source_id | int  | ✅       | The id of the source to retrieve. |
+
+**Return Type**
+
+`Source`
+
+**Example Usage Code Snippet**
+
+```python
+from gitguardian import Gitguardian, Environment
+
+sdk = Gitguardian(
+    access_token="YOUR_ACCESS_TOKEN",
+    base_url=Environment.DEFAULT.value
+)
+
+result = sdk.sources.retrieve_source(source_id=5523)
+
+print(result)
+```
+
+<!-- This file was generated by liblab | https://liblab.com/ -->
